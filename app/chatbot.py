@@ -15,7 +15,10 @@ MEMORY_PATH = Path("memory.json")
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama").lower()
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/api/generate")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "phi3:latest")
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
+OPENAI_APP_URL = os.getenv("OPENAI_APP_URL")
+OPENAI_APP_NAME = os.getenv("OPENAI_APP_NAME", "Chatbot IA")
 
 
 def load_memory() -> list:
@@ -113,7 +116,17 @@ def iter_openai_response(prompt: str) -> Generator[str, None, None]:
         yield "Erreur : la variable d'environnement OPENAI_API_KEY est absente."
         return
 
-    client = OpenAI(api_key=api_key)
+    default_headers = {}
+    if OPENAI_APP_URL:
+        default_headers["HTTP-Referer"] = OPENAI_APP_URL
+    if OPENAI_APP_NAME:
+        default_headers["X-Title"] = OPENAI_APP_NAME
+
+    client = OpenAI(
+        api_key=api_key,
+        base_url=OPENAI_BASE_URL,
+        default_headers=default_headers or None,
+    )
 
     try:
         with client.responses.stream(

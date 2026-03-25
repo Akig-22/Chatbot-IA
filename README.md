@@ -32,7 +32,10 @@ Variables disponibles :
 - `OLLAMA_URL` : URL de l'API Ollama. Par defaut `http://localhost:11434/api/generate`
 - `OLLAMA_MODEL` : modele Ollama. Par defaut `phi3:latest`
 - `OPENAI_API_KEY` : cle API OpenAI
+- `OPENAI_BASE_URL` : endpoint compatible OpenAI, utile pour OpenRouter
 - `OPENAI_MODEL` : modele OpenAI. Par defaut `gpt-4.1-mini`
+- `OPENAI_APP_URL` : URL publique de ton app pour les headers optionnels
+- `OPENAI_APP_NAME` : nom de ton app pour les headers optionnels
 
 Copier `.env.example` vers `.env` si besoin.
 
@@ -94,6 +97,19 @@ Sur Railway :
 
 - Variables : `LLM_PROVIDER`, `OPENAI_API_KEY`, `OPENAI_MODEL`
 - Start command : `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+
+### Option 3 : Render avec OpenRouter
+
+Si tu veux une option gratuite ou moins chere, tu peux garder `LLM_PROVIDER=openai` et utiliser OpenRouter comme backend compatible OpenAI.
+
+Variables Render recommandees :
+
+- `LLM_PROVIDER=openai`
+- `OPENAI_API_KEY=ta_cle_openrouter`
+- `OPENAI_BASE_URL=https://openrouter.ai/api/v1`
+- `OPENAI_MODEL=openrouter/free`
+- `OPENAI_APP_URL=https://chatbot-ia-4d9r.onrender.com`
+- `OPENAI_APP_NAME=Chatbot IA`
 
 ### Sante applicative
 
