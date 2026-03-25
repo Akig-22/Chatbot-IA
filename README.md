@@ -66,7 +66,7 @@ Pour utiliser une option gratuite ou low-cost en ligne :
 
 ```text
 LLM_PROVIDER=openai
-OPENAI_API_KEY=ta_cle_openrouter
+OPENAI_API_KEY=ma_cle_openrouter
 OPENAI_BASE_URL=https://openrouter.ai/api/v1
 OPENAI_MODEL=openrouter/free
 OPENAI_MAX_OUTPUT_TOKENS=512
@@ -110,5 +110,5 @@ render.yaml
 
 ## Notes
 
-- Le fichier `.env` ne doit jamais etre pousse sur GitHub.
+- Mon fichier `.env` ne doit jamais etre pousse sur GitHub.
 - Si une cle API a ete exposee, il faut la revoquer et en generer une nouvelle.
