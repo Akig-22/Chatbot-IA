@@ -1,10 +1,35 @@
-# Chatbot AI
+# Chatbot IA
 
-Petit chatbot en francais avec interface web statique, backend FastAPI, lecture de PDF et generation via Ollama ou OpenAI.
+Application web de chatbot en francais construite avec `FastAPI`, `TailwindCSS` et un backend LLM configurable.
 
-## Lancer en local
+## Liens
 
-### Backend
+- Demo : `https://chatbot-ia-4d9r.onrender.com`
+- GitHub : `https://github.com/Akig-22/Chatbot-IA`
+
+## Apercu
+
+Ce projet propose une interface de chat moderne avec reponse en streaming, memoire de conversation et lecture de PDF.  
+Il peut fonctionner avec `Ollama` en local ou avec une API compatible OpenAI comme `OpenAI` ou `OpenRouter`.
+
+## Fonctionnalites
+
+- Interface web responsive avec TailwindCSS
+- Reponses en streaming
+- Memoire conversationnelle simple
+- Upload et lecture de fichiers PDF
+- Backend FastAPI
+- Deploiement en ligne possible sur Render
+- Support de plusieurs providers LLM
+
+## Stack technique
+
+- Frontend : HTML, TailwindCSS, JavaScript
+- Backend : FastAPI, Python
+- LLM : Ollama, OpenAI, OpenRouter
+- Deploiement : Render
+
+## Lancer le projet en local
 
 ```powershell
 python -m venv .venv
@@ -13,106 +38,77 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-L'application sera disponible sur `http://127.0.0.1:8000`.
+Application disponible sur :
 
-### Provider LLM
-
-Le projet peut fonctionner avec `ollama` en local ou `openai` en ligne.
-
-Exemple local :
-
-```powershell
-ollama pull phi3
-ollama run phi3
+```text
+http://127.0.0.1:8000
 ```
 
-Variables disponibles :
+## Variables d'environnement
+
+Copie `.env.example` vers `.env` puis adapte selon ton provider.
+
+Variables principales :
 
 - `LLM_PROVIDER` : `ollama` ou `openai`
-- `OLLAMA_URL` : URL de l'API Ollama. Par defaut `http://localhost:11434/api/generate`
-- `OLLAMA_MODEL` : modele Ollama. Par defaut `phi3:latest`
-- `OPENAI_API_KEY` : cle API OpenAI
-- `OPENAI_BASE_URL` : endpoint compatible OpenAI, utile pour OpenRouter
-- `OPENAI_MODEL` : modele OpenAI. Par defaut `gpt-4.1-mini`
-- `OPENAI_MAX_OUTPUT_TOKENS` : limite de tokens de sortie pour eviter les depassements de quota
-- `OPENAI_APP_URL` : URL publique de ton app pour les headers optionnels
-- `OPENAI_APP_NAME` : nom de ton app pour les headers optionnels
+- `OLLAMA_URL`
+- `OLLAMA_MODEL`
+- `OPENAI_API_KEY`
+- `OPENAI_BASE_URL`
+- `OPENAI_MODEL`
+- `OPENAI_MAX_OUTPUT_TOKENS`
+- `OPENAI_APP_URL`
+- `OPENAI_APP_NAME`
 
-Copier `.env.example` vers `.env` si besoin.
+## Exemple avec OpenRouter
 
-## Mettre le projet sur GitHub
+Pour utiliser une option gratuite ou low-cost en ligne :
 
-1. Cree un nouveau depot vide sur GitHub.
-2. Dans le dossier du projet, initialise Git :
-
-```powershell
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/TON-UTILISATEUR/TON-REPO.git
-git push -u origin main
+```text
+LLM_PROVIDER=openai
+OPENAI_API_KEY=ta_cle_openrouter
+OPENAI_BASE_URL=https://openrouter.ai/api/v1
+OPENAI_MODEL=openrouter/free
+OPENAI_MAX_OUTPUT_TOKENS=512
+OPENAI_APP_URL=https://chatbot-ia-4d9r.onrender.com
+OPENAI_APP_NAME=Chatbot IA
 ```
 
-Important :
+## Deploiement sur Render
 
-- Ne pousse pas `.env`, `venv`, `.venv`, `node_modules`, `uploaded_files` ni les executables.
-- Si Git n'est pas installe sur ta machine, installe Git for Windows avant ces commandes.
+Build command :
 
-## Deploiement
-
-### Option 1 : VPS avec Ollama
-
-C'est l'option la plus simple si tu veux garder Ollama.
-
-1. Prendre un VPS ou une machine ou Ollama peut tourner.
-2. Installer Python, les dependances du projet et Ollama.
-3. Lancer l'app avec :
-
-```powershell
-uvicorn app.main:app --host 0.0.0.0 --port 8000
+```text
+pip install -r requirements.txt
 ```
 
-4. Mettre un reverse proxy devant si besoin.
+Start command :
 
-### Option 2 : Render ou Railway avec OpenAI
-
-Pour un deploiement simple, configure :
-
-1. `LLM_PROVIDER=openai`
-2. `OPENAI_API_KEY=...`
-3. `OPENAI_MODEL=gpt-4.1-mini`
-4. Start command :
-
-```powershell
+```text
 uvicorn app.main:app --host 0.0.0.0 --port $PORT
 ```
 
-Sur Render :
+Endpoint de sante :
 
-- Build command : `pip install -r requirements.txt`
-- Start command : `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-- Variables : `LLM_PROVIDER`, `OPENAI_API_KEY`, `OPENAI_MODEL`
+```text
+/health
+```
 
-Sur Railway :
+## Structure du projet
 
-- Variables : `LLM_PROVIDER`, `OPENAI_API_KEY`, `OPENAI_MODEL`
-- Start command : `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+```text
+app/
+  chatbot.py
+  main.py
+  pdf_reader.py
+frontend/
+  index.html
+  styles.css
+requirements.txt
+render.yaml
+```
 
-### Option 3 : Render avec OpenRouter
+## Notes
 
-Si tu veux une option gratuite ou moins chere, tu peux garder `LLM_PROVIDER=openai` et utiliser OpenRouter comme backend compatible OpenAI.
-
-Variables Render recommandees :
-
-- `LLM_PROVIDER=openai`
-- `OPENAI_API_KEY=ta_cle_openrouter`
-- `OPENAI_BASE_URL=https://openrouter.ai/api/v1`
-- `OPENAI_MODEL=openrouter/free`
-- `OPENAI_MAX_OUTPUT_TOKENS=512`
-- `OPENAI_APP_URL=https://chatbot-ia-4d9r.onrender.com`
-- `OPENAI_APP_NAME=Chatbot IA`
-
-### Sante applicative
-
-Un endpoint de verification est disponible sur `/health`.
+- Le fichier `.env` ne doit jamais etre pousse sur GitHub.
+- Si une cle API a ete exposee, il faut la revoquer et en generer une nouvelle.
