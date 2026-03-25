@@ -1,8 +1,46 @@
-/* Styles additionnels pour le chat */
+:root {
+    --page-bg: #eef4ff;
+}
+
+body {
+    font-family: "Segoe UI", sans-serif;
+}
+
+.glass-panel {
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.7));
+    backdrop-filter: blur(18px);
+    box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
+}
+
+.background-orb {
+    position: fixed;
+    z-index: 0;
+    border-radius: 9999px;
+    filter: blur(70px);
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.background-orb-a {
+    top: -120px;
+    right: -60px;
+    width: 360px;
+    height: 360px;
+    background: rgba(56, 189, 248, 0.35);
+}
+
+.background-orb-b {
+    bottom: -160px;
+    left: -80px;
+    width: 420px;
+    height: 420px;
+    background: rgba(251, 191, 36, 0.22);
+}
 
 .chat-box {
     scrollbar-width: thin;
-    scrollbar-color: rgba(148, 163, 184, 0.8) transparent;
+    scrollbar-color: rgba(100, 116, 139, 0.45) transparent;
 }
 
 .chat-box::-webkit-scrollbar {
@@ -10,7 +48,7 @@
 }
 
 .chat-box::-webkit-scrollbar-thumb {
-    background-color: rgba(148, 163, 184, 0.8);
+    background-color: rgba(100, 116, 139, 0.45);
     border-radius: 9999px;
 }
 
@@ -20,4 +58,22 @@
 
 .message {
     word-break: break-word;
+}
+
+.prompt-chip {
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    background: linear-gradient(135deg, #f8fafc, #eef6ff);
+    color: #0f172a;
+    border-radius: 9999px;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    box-shadow: 0 10px 24px rgba(148, 163, 184, 0.12);
+}
+
+.prompt-chip:hover {
+    transform: translateY(-1px);
+    border-color: rgba(56, 189, 248, 0.45);
+    box-shadow: 0 16px 30px rgba(56, 189, 248, 0.14);
 }
