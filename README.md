@@ -1,6 +1,6 @@
 # Chatbot AI
 
-Petit chatbot en francais avec interface web statique, backend FastAPI, lecture de PDF et generation via Ollama.
+Petit chatbot en francais avec interface web statique, backend FastAPI, lecture de PDF et generation via Ollama ou OpenAI.
 
 ## Lancer en local
 
@@ -15,9 +15,9 @@ uvicorn app.main:app --reload
 
 L'application sera disponible sur `http://127.0.0.1:8000`.
 
-### Ollama
+### Provider LLM
 
-Le projet attend un serveur Ollama accessible sur `OLLAMA_URL`.
+Le projet peut fonctionner avec `ollama` en local ou `openai` en ligne.
 
 Exemple local :
 
@@ -28,8 +28,11 @@ ollama run phi3
 
 Variables disponibles :
 
+- `LLM_PROVIDER` : `ollama` ou `openai`
 - `OLLAMA_URL` : URL de l'API Ollama. Par defaut `http://localhost:11434/api/generate`
 - `OLLAMA_MODEL` : modele Ollama. Par defaut `phi3:latest`
+- `OPENAI_API_KEY` : cle API OpenAI
+- `OPENAI_MODEL` : modele OpenAI. Par defaut `gpt-4.1-mini`
 
 Copier `.env.example` vers `.env` si besoin.
 
@@ -68,15 +71,29 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 4. Mettre un reverse proxy devant si besoin.
 
-### Option 2 : Render/Railway avec une API LLM distante
+### Option 2 : Render ou Railway avec OpenAI
 
-Si tu veux deployer sur une plateforme type Render, Railway ou Fly.io, il faut en general remplacer Ollama local par une API distante, sinon `localhost:11434` ne sera pas disponible.
+Pour un deploiement simple, configure :
 
-Dans ce cas :
+1. `LLM_PROVIDER=openai`
+2. `OPENAI_API_KEY=...`
+3. `OPENAI_MODEL=gpt-4.1-mini`
+4. Start command :
 
-1. Heberger le modele ailleurs.
-2. Configurer `OLLAMA_URL` pour pointer vers ce serveur.
-3. Definir `OLLAMA_MODEL` dans les variables d'environnement de la plateforme.
+```powershell
+uvicorn app.main:app --host 0.0.0.0 --port $PORT
+```
+
+Sur Render :
+
+- Build command : `pip install -r requirements.txt`
+- Start command : `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+- Variables : `LLM_PROVIDER`, `OPENAI_API_KEY`, `OPENAI_MODEL`
+
+Sur Railway :
+
+- Variables : `LLM_PROVIDER`, `OPENAI_API_KEY`, `OPENAI_MODEL`
+- Start command : `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
 
 ### Sante applicative
 
