@@ -34,6 +34,7 @@ Variables disponibles :
 - `OPENAI_API_KEY` : cle API OpenAI
 - `OPENAI_BASE_URL` : endpoint compatible OpenAI, utile pour OpenRouter
 - `OPENAI_MODEL` : modele OpenAI. Par defaut `gpt-4.1-mini`
+- `OPENAI_MAX_OUTPUT_TOKENS` : limite de tokens de sortie pour eviter les depassements de quota
 - `OPENAI_APP_URL` : URL publique de ton app pour les headers optionnels
 - `OPENAI_APP_NAME` : nom de ton app pour les headers optionnels
 
@@ -108,6 +109,7 @@ Variables Render recommandees :
 - `OPENAI_API_KEY=ta_cle_openrouter`
 - `OPENAI_BASE_URL=https://openrouter.ai/api/v1`
 - `OPENAI_MODEL=openrouter/free`
+- `OPENAI_MAX_OUTPUT_TOKENS=512`
 - `OPENAI_APP_URL=https://chatbot-ia-4d9r.onrender.com`
 - `OPENAI_APP_NAME=Chatbot IA`
 

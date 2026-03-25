@@ -19,6 +19,7 @@ OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
 OPENAI_APP_URL = os.getenv("OPENAI_APP_URL")
 OPENAI_APP_NAME = os.getenv("OPENAI_APP_NAME", "Chatbot IA")
+OPENAI_MAX_OUTPUT_TOKENS = int(os.getenv("OPENAI_MAX_OUTPUT_TOKENS", "512"))
 
 
 def load_memory() -> list:
@@ -132,6 +133,7 @@ def iter_openai_response(prompt: str) -> Generator[str, None, None]:
         with client.responses.stream(
             model=OPENAI_MODEL,
             input=prompt,
+            max_output_tokens=OPENAI_MAX_OUTPUT_TOKENS,
         ) as stream:
             for event in stream:
                 if event.type == "response.output_text.delta":
