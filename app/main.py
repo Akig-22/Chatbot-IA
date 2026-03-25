@@ -1,7 +1,7 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from app.chatbot import ask_bot
+from app.chatbot import LLM_PROVIDER, ask_bot
 from app.pdf_reader import read_pdf
 import json
 import shutil
@@ -22,6 +22,11 @@ def read_root():
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
+
+@app.get("/config")
+def app_config():
+    return {"llm_provider": LLM_PROVIDER}
 
 
 @app.get("/chat")

@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot IA</title>
 
-    <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Styles additionnels -->
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 
@@ -18,13 +15,13 @@
         <header class="flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4 shadow-sm">
             <div>
                 <h1 class="text-xl font-semibold text-slate-900">Chatbot IA</h1>
-                <p class="text-sm text-slate-500">Posez une question et obtenez une réponse instantanée.</p>
+                <p class="text-sm text-slate-500">Posez une question et obtenez une reponse instantanee.</p>
             </div>
             <div class="flex items-center gap-4">
-                <button onclick="clearMemory()" class="text-xs text-red-400 hover:text-red-600 transition">
-                    🗑️ Effacer la mémoire
+                <button onclick="clearMemory()" class="text-xs text-red-400 transition hover:text-red-600">
+                    Effacer la memoire
                 </button>
-                <div class="text-xs text-slate-400">Powered by FastAPI & Ollama</div>
+                <div id="provider-badge" class="text-xs text-slate-400">Powered by FastAPI</div>
             </div>
         </header>
 
@@ -37,7 +34,7 @@
                 <input id="user-input"
                     class="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                     type="text" autocomplete="off" placeholder="Posez votre question ici..."
-                    aria-label="Votre question" />
+                    aria-label="Votre question">
 
                 <button id="send-btn" type="submit"
                     class="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50">
@@ -47,7 +44,7 @@
         </main>
 
         <footer class="border-t border-slate-200 bg-white px-6 py-3 text-center text-xs text-slate-500">
-            * L'API doit être démarrée sur <code>localhost:8000</code> pour fonctionner.
+            Service web de chatbot en ligne avec reponse en streaming.
         </footer>
     </div>
 
@@ -56,6 +53,7 @@
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('send-btn');
         const form = document.getElementById('chat-form');
+        const providerBadge = document.getElementById('provider-badge');
 
         const scrollToBottom = () => {
             chatBox.scrollTop = chatBox.scrollHeight;
@@ -82,14 +80,13 @@
         const setLoading = (isLoading) => {
             sendBtn.disabled = isLoading;
             userInput.disabled = isLoading;
-            sendBtn.textContent = isLoading ? 'En cours…' : 'Envoyer';
+            sendBtn.textContent = isLoading ? 'En cours...' : 'Envoyer';
         };
 
         const sendMessage = async (question) => {
             addMessage('Moi', question);
             setLoading(true);
 
-            // Crée une bulle de message du bot et met à jour son contenu en streaming
             const botBubble = document.createElement('div');
             botBubble.className = 'message rounded-2xl p-4 text-sm shadow-sm self-start bg-slate-50';
             botBubble.innerHTML = `
@@ -105,7 +102,7 @@
 
             try {
                 const response = await fetch(`/chat?question=${encodeURIComponent(question)}`);
-                if (!response.body) throw new Error('Streaming non supporté par le navigateur.');
+                if (!response.body) throw new Error('Streaming non supporte par le navigateur.');
 
                 const reader = response.body.getReader();
                 while (true) {
@@ -123,18 +120,15 @@
                             botStream.textContent += parsed.response ?? '';
                             scrollToBottom();
                         } catch {
-                            // ignore malformed json chunks
                         }
                     }
                 }
 
-                // flush remaining
                 if (buffer.trim()) {
                     try {
                         const parsed = JSON.parse(buffer);
                         botStream.textContent += parsed.response ?? '';
                     } catch {
-                        // ignore
                     }
                 }
             } catch (err) {
@@ -149,6 +143,17 @@
             chatBox.innerHTML = '';
         };
 
+        const loadProvider = async () => {
+            try {
+                const response = await fetch('/config');
+                const data = await response.json();
+                const provider = (data.llm_provider || 'llm').toUpperCase();
+                providerBadge.textContent = `Powered by FastAPI & ${provider}`;
+            } catch {
+                providerBadge.textContent = 'Powered by FastAPI';
+            }
+        };
+
         form.addEventListener('submit', (event) => {
             event.preventDefault();
             const question = userInput.value.trim();
@@ -159,6 +164,7 @@
 
         window.addEventListener('load', () => {
             userInput.focus();
+            loadProvider();
             scrollToBottom();
         });
     </script>
