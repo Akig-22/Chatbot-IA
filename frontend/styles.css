@@ -1,0 +1,23 @@
+/* Styles additionnels pour le chat */
+
+.chat-box {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.8) transparent;
+}
+
+.chat-box::-webkit-scrollbar {
+    width: 10px;
+}
+
+.chat-box::-webkit-scrollbar-thumb {
+    background-color: rgba(148, 163, 184, 0.8);
+    border-radius: 9999px;
+}
+
+.chat-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.message {
+    word-break: break-word;
+}
